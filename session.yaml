@@ -1,0 +1,77 @@
+openapi: "3.0.1"
+info:
+  description: "This is D&D Server"
+  version: "1.0.0"
+  title: "D&D API"
+  contact:
+    email: "jan@janmg.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "D&D Server API"
+  description: "serving servants since March 2019!"
+  externalDocs:
+    description: "Find out more"
+    url: "http://janmg.com/dnd.html"
+paths:
+  /session:
+    post:
+      tags:
+      - "Create Management"
+      summary: "Create Session"
+      operationId: "createSession"
+      requestBody:
+        description: Optional description in *Markdown*
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/email'
+      responses:
+        200:
+          description: "success"
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session'
+        403:
+          description: "unauthorized"
+        404:
+          description: "booking not found"
+        405:
+          description: "validation exception"
+    get:
+      tags:
+      - "Session details"
+      summary: "Session details"
+      operationId: "getSessionDetails"
+      responses:
+        200:
+          description: "success"
+          content: 
+            application/json:
+              schema:
+                $ref: '#/components/schemas/session'
+        403:
+          description: "unauthorized"
+        404:
+          description: "booking not found"
+        405:
+          description: "validation exception"
+      security:
+      - bookingstore_auth:
+        - "write:bookings"
+        - "read:bookings"
+components:
+  schemas:
+    session:
+      type: object
+      properties:
+        sesssionid:
+          type: string
+    email:
+      type: array
+      properties:
+        email:
+          type: string
